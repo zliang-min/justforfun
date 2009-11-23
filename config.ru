@@ -14,3 +14,11 @@ set :resources_path, 'resources'
 
 require __DIR__.join('../resources/posts')
 resources Posts
+
+use Rack::HTTPResource::MiddleWare.new do
+  resources Posts
+end
+
+run Rack::HTTPResource::Application.new do
+  resources Posts
+end

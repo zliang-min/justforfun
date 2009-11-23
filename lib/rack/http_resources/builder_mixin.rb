@@ -23,7 +23,7 @@ module Rack::HTTPResources::BuilderMixin
 
         response.write resource.respond_to?(:public_send) ?
           resource.public_send(action) :
-          resource.send(action)
+          resource.__send__(action)
 
         response['Content-Type'] = 'text/html'
         response.finish

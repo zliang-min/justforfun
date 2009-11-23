@@ -13,7 +13,7 @@ class Posts
     "</html>"
   end
 
-  def show id
+  def show
     # requires :host_name => '', :user_agent => ''
     "what do you want?"
   end
