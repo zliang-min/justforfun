@@ -1,5 +1,6 @@
 require 'pathname'
-require 'rack/http_resources'
+__DIR__ = Pathname(__FILE__).dirname.expand_path.join('lib')
+require __DIR__ + 'rack/http_resources'
 
 if ENV['RACK_ENV'] != 'production'
   use Rack::Reloader, 0
@@ -11,4 +12,5 @@ end
 set :app_root, Pathname(__FILE__).dirname.expand_path
 set :resources_path, 'resources'
 
+require __DIR__.join('../resources/posts')
 resources Posts

@@ -1,25 +1,26 @@
-require 'openstruct'
+require 'ostruct'
 
 module Rack::HTTPResources::BuilderMixin
 
   class Options < OpenStruct
-    def []=(key, value) self.send key, value end
-  end
-
-  def initialize
-    @options = Options.new
-    super
+    def []=(key, value) self.send "#{key}=", value end
   end
 
   def resources object
-    object.module_eval { include Rack::HTTPResources::Resource } unless object.ancestors.include?(Rack::HTTPResources::Resource)
+    object.module_eval {
+      include Rack::HTTPResources::Resource
+    } unless object.ancestors.include?(Rack::HTTPResources::Resource)
 
     map "/#{object.to_s.downcase}" do
-      -> env {
+      run -> env {
         path = env['PATH_INFO'].gsub(/^\/|\/$/, '')
         action = path.empty? ? 'index' : path
 
-        resource = object.resond_to?(:instance) ? object.instance : object.new
+        resource = object.respond_to?(:instance) ? object.instance : object.new
+
+        resource.env env
+        response = Response.new
+
         response.write resource.respond_to?(:public_send) ?
           resource.public_send(action) :
           resource.send(action)
@@ -34,8 +35,12 @@ module Rack::HTTPResources::BuilderMixin
     if key.is_a?(Hash)
       key.each { |k, v| set k, v }
     else
-      @options[key] = value
+      options[key] = value
     end
+  end
+
+  def options
+    @options ||= Options.new
   end
 
 end

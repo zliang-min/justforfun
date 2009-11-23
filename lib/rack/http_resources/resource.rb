@@ -1,11 +1,12 @@
-module Rack::HTTPResource::Resource
+module Rack::HTTPResources::Resource
 
-  class << self
+  def request
+    @request ||= Request.new(env)
+  end
 
-    def included resouce
-      (@resources ||= []) << resouce
-    end
-
+  def env env = nil
+    @env ||= env
+    @env
   end
 
 end
