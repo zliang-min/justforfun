@@ -13,5 +13,3 @@ module Rack::HTTPResources
   }
 
 end
-
-Rack::Builder.class_eval { include Rack::HTTPResources::BuilderMixin }

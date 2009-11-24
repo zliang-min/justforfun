@@ -9,16 +9,9 @@ if ENV['RACK_ENV'] != 'production'
   use Rack::Lint
 end
 
-set :app_root, Pathname(__FILE__).dirname.expand_path
-set :resources_path, 'resources'
+#set :app_root, Pathname(__FILE__).dirname.expand_path
+#set :resources_path, 'resources'
 
 require __DIR__.join('../resources/posts')
-resources Posts
 
-use Rack::HTTPResource::MiddleWare.new do
-  resources Posts
-end
-
-run Rack::HTTPResource::Application.new do
-  resources Posts
-end
+run Posts.new
