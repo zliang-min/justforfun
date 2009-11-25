@@ -1,15 +1,9 @@
-require 'pathname'
 require 'rack'
 
 module Rack::HTTPResources
 
-  __DIR__ = Pathname(__FILE__).dirname.expand_path.join('http_resources')
-
-  {
-    :BuilderMixin => 'builder_mixin',
-    :Resource    => 'resource'
-  }.each { |mod, file|
-    autoload mod, __DIR__.join(file).to_path
-  }
+  autoload :BuilderMixin, 'rack/http_resources/builder_mixin'
+  autoload :Resource,     'rack/http_resources/resource'
+  autoload :Router,       'rack/http_resources/router'
 
 end
