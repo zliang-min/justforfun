@@ -2,14 +2,18 @@ require 'tilt'
 # Give objects the ability of rendering.
 module Renderish
 
+  autoload :Configuration, 'render-ish/configuration'
+
+  extend Configuration::Helper
+
   def self.included mod
     mod.extend ClassMethods
   end
 
   module ClassMethods
     def template_path
-      @template_path ||=
-        look_for_method_in_superclasses(:template_path) ||
+      @template_path ||
+        look_up_method_in_superclasses(:template_path) ||
         Renderish.template_path
     end
 
@@ -18,12 +22,15 @@ module Renderish
     end
 
     def template_file
-      @template_file ||=
-        name.gsub(/::/, '/').
-             gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-             gsub(/([a-z\d])([A-Z])/,'\1_\2').
-             tr("-", "_").
-             downcase
+      @template_file ||
+        Renderish.template_file || (
+          @default_template_file ||=
+          name.gsub(/::/, '/').
+               gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+               gsub(/([a-z\d])([A-Z])/,'\1_\2').
+               tr("-", "_").
+               downcase
+        )
     end
 
     def template_file= file
@@ -31,7 +38,7 @@ module Renderish
     end
 
     private
-      def look_for_method_in_superclasses name
+      def look_up_method_in_superclasses name
         # make method like a inheritable class veriable
         sc = superclass
         while sc.respond_to?(name)
@@ -47,6 +54,10 @@ module Renderish
   
   def self.template_path
     @template_path ||= '.'
+  end
+
+  def self.template_file
+    @template_file
   end
 
   def default_render_scope
@@ -77,7 +88,7 @@ module Renderish
     @template_file = file
   end
 
-  def template format = nil
+  def look_up_template format = nil
     basename = File.join template_path, template_file
     basename << ".#{format}" if format
     ext =
@@ -88,7 +99,7 @@ module Renderish
   end
 
   def render format = nil
-    Tilt.new(template(format)).render render_scope
+    Tilt.new(look_up_template(format)).render render_scope
   end
 
 end
