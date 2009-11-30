@@ -1,4 +1,5 @@
 require 'test_helper'
+load 'reset.rb'
 
 context "A render-ish object." do
   setup { Person.new }
@@ -137,8 +138,8 @@ context "A render-ish object." do
         should() do
           topic.render :html => :show
           topic.render :show,
-            :type => :html,
-            :format => :erb,
+            :type   => :html,
+            :engine => :erb,
             :layout => :abc
         end
       end

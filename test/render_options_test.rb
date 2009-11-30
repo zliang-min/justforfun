@@ -1,4 +1,5 @@
 require 'test_helper'
+load 'reset.rb'
 
 context "A render-ish object." do
   setup {
