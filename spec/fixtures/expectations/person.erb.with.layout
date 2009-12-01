@@ -1,0 +1,10 @@
+<html>
+  <head>
+    <title>render Person with layout</title>
+  </head>
+  <body>
+    <p>This is the default view for Person.
+And this file locates in examples folder.
+</p>
+  </body>
+</html>

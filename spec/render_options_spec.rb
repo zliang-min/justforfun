@@ -7,9 +7,21 @@ describe "render" do
     @it = Person.new
   end
 
+  it "should render the correct template if it's specified." do
+    @it.render(:another).should eql(
+      File.read(FIXTURES_DIR.join('expectations/person/another.erb'))
+    )
+    @it.render("person/another").should eql(
+      File.read(FIXTURES_DIR.join('expectations/person/another.erb'))
+    )
+    @it.render(FIXTURES_DIR.expand_path.join('person/another')).should eql(
+      File.read(FIXTURES_DIR.join('expectations/person/another.erb'))
+    )
+  end
+
   it "should respect :type option." do
     @it.render(:type => :html).should eql(
-      Tilt.new(File.join(FIXTURES_DIR.join('person.html.erb').to_s)).render(@it)
+      Tilt.new(FIXTURES_DIR.join('person.html.erb').to_s).render(@it)
     )
 
     lambda { @it.render(:type => :awful) }.should \
@@ -18,7 +30,7 @@ describe "render" do
 
   it "should respect :engine option." do
     @it.render(:engine => :haml).should eql(
-      Tilt.new(File.join(FIXTURES_DIR.join('person.haml').to_s)).render(@it)
+      Tilt.new(FIXTURES_DIR.join('person.haml').to_s).render(@it)
     )
 
     lambda { @it.render(:engine => :sass) }.should \
@@ -29,9 +41,17 @@ describe "render" do
   end
 
   it "should respect :layout option." do
-    @it.render(:layout => true)
-    @it.render(:layout => :layout_2nd)
-    @it.render(:layout => "path/to/layout")
-    @it.render(:layout => "/path/to/layout")
+    @it.render(:layout => true).should eql(
+      File.read(FIXTURES_DIR.join('expectations/person.erb.with.layout'))
+    )
+    @it.render(:layout => :person).should eql(
+      File.read(FIXTURES_DIR.join('expectations/person.erb.with.layout'))
+    )
+    @it.render(:layout => "layout/person").should eql(
+      File.read(FIXTURES_DIR.join('expectations/person.erb.with.layout'))
+    )
+    @it.render(:layout => FIXTURES_DIR.expand_path.join('layout/person')).should eql(
+      File.read(FIXTURES_DIR.join('expectations/person.erb.with.layout'))
+    )
   end
 end
