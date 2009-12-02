@@ -1,17 +1,6 @@
 class Posts
-  include Rack::HTTPResources::Resource
 
-  map '/'
-
-  default_routes! :define_methods => true, :only => [:index, :new, :create, :show]
-
-  GET '/',         :index
-  GET '/:id',      :show
-  GET '/new',      :new
-  PUT '/',         :create
-  GET '/:id/edit', :edit
-  POST '/:id',     :update
-  DELETE '/:id',   :delete
+  include Renderish::Renderable
 
   def show id
     http.allow :get
@@ -24,31 +13,24 @@ class Posts
   end
 
   def index
-=begin
-    http.request
-    http.response
-    http.allow :get, :head do |method|
-      method.get do {
-      }
+    Post.all.each { |post| post.render }
+    render :index, :collection => posts, :locals => {:author => author}, :object => self
+  end
 
-      method.head do {
-      }
+  class Model < ActiveRecord::Base
+    set_table_name 'posts'
+
+    include Renderish::Renderable
+
+    self.template_path = ''
+    self.template_file = ''
+    self.render_scope  = Object
+
+    def self.index
+      @posts = all :order => 'created_at DESC'
+      render :index
     end
-    http.reject :post
-    http.headers
-    http.body
-    http.session
-    http.cookies
-=end
-    "<html>" \
-      "<head>" \
-        "<title>Welcome</title>" \
-      "</head>" \
-      "<body>" \
-        "<div>Hello World</div>" \
-        "<div>Welcome to here</div>" \
-      "</body>" \
-    "</html>"
+
   end
 
 end

@@ -1,2 +1,4 @@
-Renderish.template_path = Person.template_path = nil
-Renderish.template_file = Person.template_file = nil
+Renderish.configuration.reset_all
+
+Person.template_path = nil
+Person.template_basename = nil

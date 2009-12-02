@@ -15,4 +15,12 @@ end
 
 require __DIR__.join('../resources/posts')
 
-run Posts.new
+#run Posts.new
+
+require 'usher'
+
+routes = Usher::Interface.for(:rack) do
+  get('/posts').to(Posts.new)
+end
+
+run routes

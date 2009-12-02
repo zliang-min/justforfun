@@ -1,3 +1,3 @@
 class Person
-  include Renderish
+  include Renderish::Renderable
 end

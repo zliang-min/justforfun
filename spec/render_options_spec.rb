@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "render" do
   before :all do
     load 'reset.rb'
-    Renderish.template_path = FIXTURES_DIR
+    Renderish.configuration { |config| config.template_path = FIXTURES_DIR }
     @it = Person.new
   end
 

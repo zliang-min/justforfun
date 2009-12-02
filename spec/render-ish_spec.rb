@@ -1,9 +1,8 @@
 require 'spec_helper'
 
-describe "A render-ish object" do
+describe "An instance of a renderable object" do
   before :all do
     load 'reset.rb'
-    Renderish.template_path = nil # in order to test default behavior
     @it = Person.new
   end
 
@@ -34,7 +33,7 @@ describe "A render-ish object" do
   describe "Set template path" do
     describe "in Renderish." do
       before {
-        Renderish.template_path = FIXTURES_DIR
+        Renderish.configuration.template_path = FIXTURES_DIR
       }
 
       it 'should render template in the right location.' do
@@ -46,7 +45,7 @@ describe "A render-ish object" do
 
     describe "in class." do
       before {
-        Renderish.template_path = "/path/that/i/donot/care"
+        Renderish.configuration.template_path = "/path/that/i/donot/care"
         Person.template_path = FIXTURES_DIR
       }
 
@@ -59,7 +58,7 @@ describe "A render-ish object" do
 
     describe "in instance." do
       before {
-        Renderish.template_path = "/path/that/i/donot/care"
+        Renderish.configuration.template_path = "/path/that/i/donot/care"
         Person.template_path = "/path/that/i/donot/care/too"
         @it.template_path = FIXTURES_DIR
       }
@@ -76,7 +75,7 @@ describe "A render-ish object" do
     before(:all) { Person.template_path = FIXTURES_DIR }
 
     describe "in Renderish." do
-      before { Renderish.template_file = 'person_alt' }
+      before { Renderish.configuration.template_basename = 'person_alt' }
 
       it 'should render the right template.' do
         @it.render.should eql(
@@ -87,8 +86,8 @@ describe "A render-ish object" do
 
     describe "in class." do
       before {
-        Renderish.template_file = "not_exist_file"
-        Person.template_file = 'person_alt'
+        Renderish.configuration.template_basename = "not_exist_file"
+        Person.template_basename = 'person_alt'
       }
 
       it 'should render the right template.' do
@@ -100,9 +99,9 @@ describe "A render-ish object" do
 
     describe "in instance." do
       before {
-        Renderish.template_file = "not_exist_file"
-        Person.template_file = "not_exist_file_2"
-        @it.template_file = "person_alt"
+        Renderish.configuration.template_basename = "not_exist_file"
+        Person.template_basename = "not_exist_file_2"
+        @it.template_basename = "person_alt"
       }
 
       it 'should render the right template.' do
