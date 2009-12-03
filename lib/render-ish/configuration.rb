@@ -9,7 +9,7 @@ module Renderish
     class << self
       # Return all configuration items with their default values.
       # @private
-      def items; @items end
+      def items; @items.dup end
 
       # Adds a configuration item.
       # @param [Symbol, String] name the name of the item.
@@ -17,20 +17,16 @@ module Renderish
       def add name, default = nil
         # attr_writer :foo
         # def foo
-        #   @foo || default_foo
+        #   @foo || self.class.items[:foo]
         # end
         name = name.to_sym
-        items[name] = default
+        @items[name] = default
 
         Configuration.class_eval <<-__CODE__, __FILE__, __LINE__ + 1
           attr_writer #{name.inspect}
 
           def #{name}
             @#{name} || self.class.items[#{name.inspect}]
-          end
-
-          def reset_#{name}
-            self.#{name} = nil
           end
         __CODE__
 
@@ -60,19 +56,28 @@ module Renderish
           is_a?(Module) ? self : self.class
         )
       },
-      :template          => nil,
-      :render_scope      => lambda { self },
-      :render_type       => nil,
-      :render_engine     => nil
+      :template_source   => nil,
+      :template_engine   => nil,
+      :template_format   => nil,
+      :render_scope      => lambda { self }
     }.each { |k, v| add k, v }
 
-    # reset all configuration items to their default values.
+    # reset configuration items to their default values.
+    # @param [#to_sym] name indicates which item is going to be reset. If pass :all here,
+    #   all configuration items will be reset. Defaults :all.
     # @return [NilClass] nil
-    def reset_all
-      (methods.grep(/\Areset_/) - [:reset_all, 'reset_all']).each do |reset_method|
-        send reset_method
+    def reset(name=:all)
+      name = name.to_sym
+      items = self.class.items
+      (name == :all ? items.keys : [name]).each do |item|
+        send "#{item}=", items[item]
       end
       nil
+    end
+
+    # Register a template implementation by file extension.
+    def register(ext, template_class)
+      Tilt.register ext, template_class
     end
 
     module Helper
@@ -82,7 +87,7 @@ module Renderish
       # * +template_basename+:
       # * +template+:
       # * +render_scope+:
-      # * +render_type+:
+      # * +render_format+:
       # * +render_engine+:
       # @yieldparam [Renderish::Configuration] configuration the configuration object.
       # @return [Renderish::Configuration] the configuration object.
