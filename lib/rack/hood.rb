@@ -1,55 +1,40 @@
+require 'pathname'
+require Pathname(__FILE__).dirname.join('../warden/strategies/http_auth')
+
 module Rack
   class Hood
     # @param [#call] app a rack application
     # @param [Hash] options options to customize the middleware
     # @option [] ???
-    def initialize(app, options={})
-      @app = app
+    def initialize(app, options={}, &block)
+      Warden::Strategies::HTTPAuth.register do
+        digest do
+          def realm; 'gimi' end
 
-      Warden::Strategies.add(:basic_http) do
-        def valid?
-        end
-
-        def authenticate!
+          def auth!(username)#, password)
+            #username == 'gimi.liang' and password == 'abc'
+            'abc'
+          end
         end
       end
+
+      config = options
+      @warden_manager = Warden::Manager.new(Filter.new(app), config, &block)
     end
 
     def call(env)
-      env['warden'].authenticate! unless env['warden'].authenticate?
-    end
-  end
-end
-
-require 'warden'
-
-module Warden
-  module Strategies
-    class HTTPAuth::Base < Base
-
-      attr_accessor :realm
-
-      private
-
-      def unauthorized(www_authenticate = challenge)
-        return [ 401,
-          { 'Content-Type' => 'text/plain',
-            'Content-Length' => '0',
-            'WWW-Authenticate' => www_authenticate.to_s },
-          []
-        ]
-      end
-
-      def bad_request
-        return [ 400,
-          { 'Content-Type' => 'text/plain',
-            'Content-Length' => '0' },
-          []
-        ]
-      end
+      @warden_manager.call(env)
     end
 
-    class HTTPAuth::Basic < HTTPAuth::Base
+    class Filter
+      def initialize(app)
+        @app = app
+      end
+
+      def call(env)
+        env['warden'].authenticate! unless env['warden'].authenticated?
+        @app.call(env)
+      end
     end
   end
 end
