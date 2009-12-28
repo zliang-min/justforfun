@@ -24,11 +24,18 @@ class Maze
     end
 
     def eql?(other)
-      other.is_a?(Cell) &&
+      other.is_a?(Cell)  &&
+      maze == other.maze &&
       x == other.x &&
       y == other.y
     end
-  end
+
+    def to_s
+      "(#{x}, #{y})"
+    end
+
+    alias inspect to_s
+  end # Cell
 
   def initialize(maze_string)
     @cells = {}
@@ -50,16 +57,16 @@ class Maze
 
   private
   def parse(maze_string)
-    row = -1
+    y = -1
     start_axes = end_axes = nil
     @maze = maze_string.each_line.map do |line|
-      row += 1
-      (col = line.index(START_POINT_MARKER)) && start_axes = [col, row]
-      (col = line.index(END_POINT_MARKER))   && end_axes   = [col, row]
+      y += 1
+      (x = line.index(START_POINT_MARKER)) && start_axes = [x, y]
+      (x = line.index(END_POINT_MARKER))   && end_axes   = [x, y]
       line.unpack 'c*'
     end
-    @start_point = cell *start_axes
-    @end_point   = cell *end_axes
+    @start_point = cell *start_axes if start_axes
+    @end_point   = cell *end_axes   if end_axes
   end
 
   def navigable?(cell)
@@ -67,19 +74,11 @@ class Maze
   end
 
   def exists?(x, y)
-    (row = @maze[x]) and row[y]
-  end
-
-  def transform_to_adjacency_list
-    @maze.each_with_index.inject(Hash.new { |h, k| h[k] = [] }) do |list, row, row_ind|
-      row.each_with_index do |col, col_ind|
-        cell = cell(row_ind, col_ind)
-        list[cell] << cell.neighbors.select { |c| navigable? c } if navigable?(cell)
-      end
-    end
+    !(x < 0 || y < 0) and (row = @maze[y]) and row[x]
   end
 
   def process
+    to_graph.shortest_path(@start_point, @end_point)
     (steps = Hash.new { |h, k| h[k] = INFINITE })[@start_point] = 0
     cells = [@start_point]
     visited = []
@@ -97,10 +96,37 @@ class Maze
         STDOUT.flush
         n
       end.flatten!
+      puts "cells: #{cells}"
+      puts "visited: #{visited}"
       cells -= visited
+      puts "then: #{cells}"
       sleep 5
     end
     steps[@end_point]
   end
 
+  def to_graph
+    Graph.new(self) do |a, b|
+    end
+    @maze.each_with_index.inject(Graph.new) do |graph, row, row_ind|
+      row.each_with_index do |col, col_ind|
+        cell = cell(row_ind, col_ind)
+        graph[cell] << cell.neighbors.select { |c| navigable? c } if navigable?(cell)
+      end
+    end
+  end
+
+end
+
+# jacacency list graph
+class Graph
+  def initialize(matrix)
+    matrix.each
+  end
+
+  def [](vertex)
+  end
+
+  def shortest_path(from, to)
+  end
 end
