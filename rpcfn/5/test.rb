@@ -52,10 +52,9 @@ MAZE_3
 class MazeTest < Test::Unit::TestCase
   def test_good_mazes
     assert_equal true, Maze.new(MAZE1).solvable?
-    #assert_equal true, Maze.new(MAZE2).solvable?
+    assert_equal true, Maze.new(MAZE2).solvable?
   end
 
-=begin
   def test_bad_mazes
     assert_equal false, Maze.new(MAZE3).solvable?
   end
@@ -65,5 +64,4 @@ class MazeTest < Test::Unit::TestCase
     assert_equal 75, Maze.new(MAZE2).steps
     assert_equal 0, Maze.new(MAZE3).steps
   end
-=end
 end

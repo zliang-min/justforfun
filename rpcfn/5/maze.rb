@@ -1,26 +1,37 @@
 class Maze
   START_POINT_MARKER = 'A'.freeze
   END_POINT_MARKER   = 'B'.freeze
-  WALL               = '#'.unpack('c').first.freeze
   INFINITE           = (1.0 / 0.0).freeze
 
   class Cell
-    attr_reader :x, :y, :maze
+    WALL = '#'.unpack('c').first.freeze
+
+    attr_reader :maze, :x, :y, :type
 
     def initialize(maze, x, y)
       @maze = maze
       @x, @y = x, y
+      @type = maze.at(x, y)
     end
 
-    def neighbors
-      @neighbors ||= begin
-        neighbors = []
-        (up    = maze.cell(self.x, self.y - 1)) && neighbors << up
-        (left  = maze.cell(self.x - 1, self.y)) && neighbors << left
-        (below = maze.cell(self.x, self.y + 1)) && neighbors << below
-        (right = maze.cell(self.x + 1, self.y)) && neighbors << right
-        neighbors
+    def east;  @east  ||= maze.cell(self.x + 1, self.y) end
+
+    def south; @south ||= maze.cell(self.x, self.y + 1) end
+
+    def west;  @west  ||= maze.cell(self.x - 1, self.y) end
+
+    def north; @north ||= maze.cell(self.x, self.y - 1) end
+
+    def neighbors(navigable_only = true)
+      [:east, :south, :west, :north].inject([]) do |neighbors, direction|
+        (cell = send direction) &&
+        (!navigable_only || cell.navigable?) &&
+        neighbors << cell || neighbors
       end
+    end
+
+    def navigable?
+      type != WALL
     end
 
     def eql?(other)
@@ -43,16 +54,20 @@ class Maze
   end
 
   def solvable?
-    steps == INFINITE
+    steps != 0
   end
 
   def steps
-    @steps ||= process
+    @steps ||= (step = process) == INFINITE ? 0 : step
   end
 
   def cell(x, y)
     @cells.has_key?([x, y]) ? @cells[[x, y]] :
       @cells[[x, y]] = exists?(x, y) ? Cell.new(self, x, y) : nil
+  end
+
+  def at(x, y)
+    x < 0 || y < 0 ? nil : (row = @maze[y]) && row[x]
   end
 
   private
@@ -69,64 +84,37 @@ class Maze
     @end_point   = cell *end_axes   if end_axes
   end
 
-  def navigable?(cell)
-    @maze[cell.x][cell.y] != C_wall
-  end
-
   def exists?(x, y)
-    !(x < 0 || y < 0) and (row = @maze[y]) and row[x]
+    not at(x, y).nil?
   end
 
-  def process
-    to_graph.shortest_path(@start_point, @end_point)
-    (steps = Hash.new { |h, k| h[k] = INFINITE })[@start_point] = 0
-    cells = [@start_point]
-    visited = []
-    puts "From: (#{@start_point.x}, #{@start_point.y}) to (#{@end_point.x}, #{@end_point.y})."
-    while !cells.empty?
-      visited.concat cells
-      cells.map! do |cell|
-        STDOUT.print("Visit[#{cell.x}, #{cell.y}]: ");
-        step = steps[cell] + 1
-        n = cell.neighbors.each do |neighbor|
-          STDOUT.print "(#{neighbor.x}, #{neighbor.y}), "
-          steps[neighbor] = step if step < steps[neighbor]
-        end
-        STDOUT.print "\n"
-        STDOUT.flush
-        n
-      end.flatten!
-      puts "cells: #{cells}"
-      puts "visited: #{visited}"
-      cells -= visited
-      puts "then: #{cells}"
-      sleep 5
-    end
-    steps[@end_point]
-  end
-
-  def to_graph
-    Graph.new(self) do |a, b|
-    end
-    @maze.each_with_index.inject(Graph.new) do |graph, row, row_ind|
-      row.each_with_index do |col, col_ind|
-        cell = cell(row_ind, col_ind)
-        graph[cell] << cell.neighbors.select { |c| navigable? c } if navigable?(cell)
+  def transform
+    @maze.each_with_index.inject(Hash.new { |h, k| h[k] = []}) do |list, row, y|
+      row.each_with_index do |col, x|
+        cell = cell(x, y)
+        list[cell] << cell.neighbors if cell.navigable?
       end
     end
   end
 
-end
-
-# jacacency list graph
-class Graph
-  def initialize(matrix)
-    matrix.each
+  def process
+    return INFINITE unless @start_point && @end_point
+    sources = [@start_point]
+    next_sources = @start_point.neighbors
+    (steps = Hash.new { |h, k| h[k] = INFINITE })[@start_point] = 0
+    until next_sources.empty?
+      source = next_sources.first
+      next_sources.concat(
+        source.neighbors.each do |neighbor|
+          step = steps[neighbor] + 1
+          steps[source] = step if step < steps[source]
+        end
+      )
+      return steps[@end_point] if source == @end_point
+      sources << source
+      next_sources -= sources
+    end
+    steps[@end_point]
   end
 
-  def [](vertex)
-  end
-
-  def shortest_path(from, to)
-  end
 end
