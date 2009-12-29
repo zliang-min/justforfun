@@ -1,3 +1,6 @@
+# RPCFN #5: Mazes
+# @author 梁智敏(Gimi Liang) [gimi.liang at gamil dot com]
+# @date 2009/12/29
 class Maze
   START_POINT_MARKER = 'A'.freeze
   END_POINT_MARKER   = 'B'.freeze
@@ -22,6 +25,8 @@ class Maze
 
     def north; @north ||= maze.cell(self.x, self.y - 1) end
 
+    # returns all neighbors of this cell.
+    # @param [Boolean] navigable_only if it's true, only returns neighbors that are navigable.
     def neighbors(navigable_only = true)
       [:east, :south, :west, :north].inject([]) do |neighbors, direction|
         (cell = send direction) &&
@@ -48,6 +53,7 @@ class Maze
     alias inspect to_s
   end # Cell
 
+  # Create a maze with a maze string.
   def initialize(maze_string)
     @cells = {}
     parse maze_string
@@ -66,11 +72,17 @@ class Maze
       @cells[[x, y]] = exists?(x, y) ? Cell.new(self, x, y) : nil
   end
 
+  # Returns the value of a cell by its axes.
   def at(x, y)
     x < 0 || y < 0 ? nil : (row = @maze[y]) && row[x]
   end
 
+  def exists?(x, y)
+    not at(x, y).nil?
+  end
+
   private
+  # Turns a maze string into a 2-dimension array and marks the start point and the end point.
   def parse(maze_string)
     y = -1
     start_axes = end_axes = nil
@@ -84,19 +96,8 @@ class Maze
     @end_point   = cell *end_axes   if end_axes
   end
 
-  def exists?(x, y)
-    not at(x, y).nil?
-  end
-
-  def transform
-    @maze.each_with_index.inject(Hash.new { |h, k| h[k] = []}) do |list, row, y|
-      row.each_with_index do |col, x|
-        cell = cell(x, y)
-        list[cell] << cell.neighbors if cell.navigable?
-      end
-    end
-  end
-
+  # Figure out the least steps from start point to end point using Dijkstra's algorithm.
+  # @return [Integer] steps if the maze is unsolvable, return Infinite.
   def process
     return INFINITE unless @start_point && @end_point
     sources = [@start_point]
@@ -117,4 +118,74 @@ class Maze
     steps[@end_point]
   end
 
+end
+
+# --- TESTS -------------------------------------------------------------------
+if $0 == __FILE__
+  require 'test/unit'
+
+  MAZE1 = <<MAZE_1 # should SUCCEED
+#####################################
+# #   #     #A        #     #       #
+# # # # # # ####### # ### # ####### #
+# # #   # #         #     # #       #
+# ##### # ################# # #######
+#     # #       #   #     # #   #   #
+##### ##### ### ### # ### # # # # # #
+#   #     #   # #   #  B# # # #   # #
+# # ##### ##### # # ### # # ####### #
+# #     # #   # # #   # # # #       #
+# ### ### # # # # ##### # # # ##### #
+#   #       #   #       #     #     #
+#####################################
+MAZE_1
+
+  MAZE2 = <<MAZE_2 # should SUCCEED
+#####################################
+# #       #             #     #     #
+# ### ### # ########### ### # ##### #
+# #   # #   #   #   #   #   #       #
+# # ###A##### # # # # ### ###########
+#   #   #     #   # # #   #         #
+####### # ### ####### # ### ####### #
+#       # #   #       # #       #   #
+# ####### # # # ####### # ##### # # #
+#       # # # #   #       #   # # # #
+# ##### # # ##### ######### # ### # #
+#     #   #                 #     #B#
+#####################################
+MAZE_2
+
+  MAZE3 = <<MAZE_3 # should FAIL
+#####################################
+# #   #           #                 #
+# ### # ####### # # # ############# #
+#   #   #     # #   # #     #     # #
+### ##### ### ####### # ##### ### # #
+# #       # #  A  #   #       #   # #
+# ######### ##### # ####### ### ### #
+#               ###       # # # #   #
+# ### ### ####### ####### # # # # ###
+# # # #   #     #B#   #   # # #   # #
+# # # ##### ### # # # # ### # ##### #
+#   #         #     #   #           #
+#####################################
+MAZE_3
+
+  class MazeTest < Test::Unit::TestCase
+    def test_good_mazes
+      assert_equal true, Maze.new(MAZE1).solvable?
+      assert_equal true, Maze.new(MAZE2).solvable?
+    end
+
+    def test_bad_mazes
+      assert_equal false, Maze.new(MAZE3).solvable?
+    end
+
+    def test_maze_steps
+      assert_equal 44, Maze.new(MAZE1).steps
+      assert_equal 75, Maze.new(MAZE2).steps
+      assert_equal 0, Maze.new(MAZE3).steps
+    end
+  end
 end
