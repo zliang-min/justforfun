@@ -7,7 +7,9 @@ class Website < Sinatra::Base
     respond_to :html, :xml, :json
 
     has_one :blog do
-      has_many :posts, Posts
+      has_many :posts, Posts do
+        get '/index', :welcome
+      end
     end
   end
 end

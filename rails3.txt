@@ -1,0 +1,54 @@
+# Modularity
+## ActiveSupport
+It is now viable to cherry-pick specific elements. All dependencies are explicit. Even better other parts of Rails now explicitly declare the dependencies they have on ActiveSupport. However, for simplicity, Rails 3 ships with all of ActiveSupport still provided. To turn it off, declare +config.active_support.bare = true+ in the configuration file (so, 3.days is not available any more unless the specific module is included).
+
+## ActionController
+It is splited into three parts:
+* ActionDispatch: includes the dispatcher functionality.
+* AbstractController: includes codes that were meant to be reused by non-HTTP controllers. Both ActionController and ActionMailer inherit from it.
+* ActionController: the HTTP controller. Every standalone component has benn isolated, and it's possible to start with a stripped-down controller and pull in just the components that are needed. +ActionController::Base+ simply starts with that same stripped-down contrller and pulls everything in.
+    module ActionController
+      class Base < Metal
+        abstract!
+
+        include AbstractController::Callbacks
+        include AbstractController::Logger
+
+        include AbstractController::Helpers
+        ...
+      end
+    end
+Example of customizing controllers:
+    class FasterController < ActionController::Metal
+      abstract!
+
+      # Rendering would be pulled in by layouts, but I include it here for clarity
+      include ActionController::Rendering
+      include ActionController::Layouts
+
+      append_view_path Rails.root.join("app/views")
+    end
+
+    class AwesomeController < FasterController
+      def index; redner "so_speedy" end
+    end
+
+    # in routes
+    MyApp.routes.draw { match "/must_be_fast" => "awesome#index" }
++ActioinController::Middleware+, which is middleware with all of the powers of ActionController, allows you to pull in whatever ActionController features you want as needed. Example:
+    class MyMiddleware < ActionController::Middleware
+      include ActionController::ConditionalGet
+      include ...
+
+      def call(env)
+        ...
+      end
+    end
+
+# Performance
+A few of the performance optimizations:
+* Reducing general controller overhead
+* (greatly) Speeding up rendering a collection of partials
+* more!
+
+.... TO BE CONTINUE! STAY TUNE!
