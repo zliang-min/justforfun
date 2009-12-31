@@ -439,11 +439,14 @@ function draw_editor(ctx) {
       var lingrad = ctx.createLinearGradient(0, 0, 0, line_height);
       lingrad.addColorStop(0, '#06ADB4');
       lingrad.addColorStop(1, '#03787D');
-      ctx.fillStyle = lingrad;
+      var width = ctx.canvas.width,
+          white = '#FFF';
       Object.keys(ctx).sort().each(function(key, i) {
         ctx.save();
         ctx.translate(0, i * line_height);
-        ctx.fillRect(0, 0, 100, line_height);
+        ctx.fillStyle = lingrad;
+        ctx.fillRect(0, 0, width, line_height);
+        ctx.fillStyle = white;
         ctx.fillText(key, 0, 0);
         ctx.restore();
       });
