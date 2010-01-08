@@ -3,6 +3,15 @@ class Website < Sinatra::Base
   use Middleware::Two
   use Middleware::Three
 
+  map '/products' do
+    map ':id' do
+      get do
+        show Product.find(:id)
+      end
+
+    end
+  end
+
   has_many :accounts do
     respond_to :html, :xml, :json
 
