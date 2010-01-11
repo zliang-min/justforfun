@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>This is a title template</title>
+  </head>
+  <body>
+    <h1>This is the header template</h1>
+    <table data-ruhl="_if: user_list">
+      <thead>
+        <tr>
+          <td>First Name</td>
+          <td>Last Name</td>
+          <td>Email</td>
+        </tr>
+      </thead>
+      <tr data-ruhl="_collection: user_list">
+        <td data-ruhl="first_name">Andrew</td>
+        <td data-ruhl="last_name">Stone</td>
+        <td data-ruhl="_if: email">andy@stonean.com</td>
+      </tr>
+    </table>
+    <p data-ruhl="_unless: user_list, no_users_message"/>
+  </body>
+</html>

@@ -1,4 +1,4 @@
 module Jekyllku::Model
-  class Post < Sequel::Model
+  class Page < Sequle::Model
   end
 end

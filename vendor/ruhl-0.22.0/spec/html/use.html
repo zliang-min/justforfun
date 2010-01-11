@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>This is a title template</title>
+  </head>
+  <body>
+    <h1>My Account</h1>
+    <div id="sidebar" data-ruhl="_use: user">
+      <form action="/account" class="edit_user" id="edit_user" method="post">
+
+        <label for='user_first_name'>First Name:</label>
+        <input id="user_first_name" name="user[first_name]" size="30" type="text" 
+        data-ruhl="value: first_name" />
+
+        <label for='user_last_name'>Last Name:</label>
+        <input id="user_last_name" name="user[last_name]" size="30" type="text"
+        data-ruhl="value: last_name" />
+
+        <label for='user_email'>Email:</label>
+        <input id="user_email" name="user[email]" size="30" type="text"
+        data-ruhl="value: email" />
+
+        <div class='btn_row'>
+          <input id="user_submit" name="commit" type="submit" value="Login" />
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

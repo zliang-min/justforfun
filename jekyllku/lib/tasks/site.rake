@@ -1,0 +1,2 @@
+namespace :site do
+end

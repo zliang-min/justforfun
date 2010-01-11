@@ -1,0 +1,4 @@
+# require 'gem'
+# require 'jekyllku'
+require '../../lib/jekyllku'
+require 'tasks/jekyllku'
