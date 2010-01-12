@@ -1,8 +1,8 @@
-# Modularity
-## ActiveSupport
+= Modularity
+== ActiveSupport
 It is now viable to cherry-pick specific elements. All dependencies are explicit. Even better other parts of Rails now explicitly declare the dependencies they have on ActiveSupport. However, for simplicity, Rails 3 ships with all of ActiveSupport still provided. To turn it off, declare +config.active_support.bare = true+ in the configuration file (so, 3.days is not available any more unless the specific module is included).
 
-## ActionController
+== ActionController
 It is splited into three parts:
 * ActionDispatch: includes the dispatcher functionality.
 * AbstractController: includes codes that were meant to be reused by non-HTTP controllers. Both ActionController and ActionMailer inherit from it.
@@ -45,10 +45,19 @@ Example of customizing controllers:
       end
     end
 
-# Performance
+= Performance
 A few of the performance optimizations:
 * Reducing general controller overhead
 * (greatly) Speeding up rendering a collection of partials
 * more!
+
+= Plugin API
+Even Rails 3 itself is trying to build itself on the core components. (Like ActionPack)
+
+= ActiveModel
+* Use ActiveModel::Lint to test a object if it's ActiveModel compliant.
+* Two major elements:
+  * ActiveModel API
+  * ActiveModel Modules
 
 .... TO BE CONTINUE! STAY TUNE!
