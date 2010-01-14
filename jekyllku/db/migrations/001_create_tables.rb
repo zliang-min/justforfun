@@ -6,7 +6,7 @@ class CreateTables < Sequel::Migration
   def up
     tables.each do |table|
       create_table table do
-        primary_key :path, :string, :size => 255, :auto_increcement => false
+        primary_key :path, :string, :size => 255, :auto_increment => false
         text :content
       end
     end

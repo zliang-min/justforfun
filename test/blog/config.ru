@@ -1,6 +1,6 @@
-require 'gem'
-require 'jekyllku'
+require 'boot'
 
+Jekyllku.init
 # Since Jekyllku::App is not thing more than a standard sinatra app, you can customize it in the way with which you have already got familious.
 # Jekyllku::App.use Rack::CommonLogger
 # Jekyllku::App.use Race::Cache
