@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8">
+    <title>客户端表单验证和消息通知</title>
+    <!-- meta data -->
+    <meta name="generator" content="hands" />
+    <meta name="presdate" content="2010-08-13" />
+    <meta name="author" content="梁智敏" />
+    <meta name="company" content="51hejia.com" />
+    <!-- javascripts -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
+    <!-- sytlesheets -->
+    <!-- prettify -->
+    <link rel="stylesheet" type="text/css" href="prettify/prettify.css" media="screen">
+    <!-- jqurey ui -->
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" media="screen">
+    <!-- jGrowl -->
+    <link rel="stylesheet" type="text/css" href="jGrowl/jquery.jgrowl.css" media="screen">
+    <!-- s6 -->
+    <link rel="stylesheet" href="s6/blank.css"         media="projection" id="styleProjection">
+    <link rel="stylesheet" href="s6/shared/screen.css" media="screen"     id="styleScreen">
+    <link rel="stylesheet" href="s6/shared/print.css"  media="print">
+    <!-- local -->
+    <style type="text/css">
+      body { font-family: '微软雅黑', '宋体', sans-serif; }
+
+      form div { padding: 3px 0; }
+
+      .slide p { margin: 5px 0; }
+
+      .source h2 { margin: 0; padding: 0; font-size: 12px; }
+
+      .hidden { display: none; }
+
+      /*
+      #notifier { color: white; }
+      #notifier h1 { margin: 0; padding: 3px 2px 3px 0; font-size: 12px; }
+      */
+    </style>
+  </head>
+  <body>
+    <!-- layout -->
+    <div class="layout">
+      <div id="header">jquery.validate &amp; jGrowl</div>
+      <div id="footer">
+        <h1>梁智敏 liangzhimin at 51hejia dot com</h1>
+        <h2>Copyright 2010 梁智敏</h2>
+      </div>
+    </div>
+
+    <div class="presentation">
+    <!-- slides go here -->
+
+      <div class="slide">
+        <h1>简介</h1>
+        <ul>
+          <li>
+            <p>表单验证：jquery.validate</p>
+            <ul>
+              <li>主页 - http://bassistance.de/jquery-plugins/jquery-plugin-validation/</li>
+              <li>jQuery插件库地址 - http://docs.jquery.com/Plugins/Validation/Validator</li>
+            </ul>
+          </li>
+          <li>
+            <p>消息通知：jGrowl</p>
+            <ul>
+              <li>主页 - http://stanlemon.net/projects/jgrowl.html</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="slide">
+        <h1>修改默认选项</h1>
+        <p>当页面上需要用到大量相同的选项时，可以通过修改选项的默认值来达到简化代码的目的。</p>
+        <div class="body">
+          <script type="text/javascript">
+            jQuery(function($) {
+              // 修改jGrowl插件的默认选项
+              $.extend($.jGrowl.defaults, {
+                closerTemplate: '<div>[全部关闭]</div>',
+                position: 'bottom-right'
+              });
+
+              $.validator.setDefaults({
+                // 默认的提示信息
+                messages: {
+                  required: "此项为必填项",
+                  remote: "信息有误",
+                  email: "无效的电子邮箱地址",
+                  url: "无效的url地址",
+                  date: "无效的日期",
+                  dateISO: "无效的ISO日期",
+                  number: "无效的数字",
+                  digits: "只能输入整数",
+                  creditcard: "无效的信用卡号",
+                  equalTo: "输入不匹配",
+                  accept: "无效的扩展名",
+                  maxlength: $.validator.format("不能多于{0}个字符"),
+                  minlength: $.validator.format("不能少于{0}个字符"),
+                  rangelength: $.validator.format("字符个数必须在{0}到{1}之间"),
+                  range: $.validator.format("输入值必须在{0}到{1}之间"),
+                  max: $.validator.format("不能大于{0}"),
+                  min: $.validator.format("不能少于{0}")
+                },
+
+                // 验证成功后，提交form
+                submitHandler: function(form) {
+                  return $.jGrowl(
+                    '你提交的form的id是' + form.id + '.', {
+                    header: '验证成功！'
+                  });
+
+                  $('#notifier').notify('create', {form_id: form.id}, {expires: false});
+
+                  $.pnotify({
+                    pnotify_title: '验证成功！',
+                    pnotify_text: '你提交的form的id是' + form.id + '.'
+                  });
+                }
+              });
+
+              // 提示信息本地化
+              $.extend($.validator.messages, $.validator.defaults.messages);
+            });
+          </script>
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>简单例子 - 通过js设置验证规则</h1>
+        <p>一个简单的表单验证，验证的规则在js里面定义。个人推荐使用这种方法，可以使整体代码更紧凑和简单。</p>
+        <div class="body">
+          <form id="example1">
+            <fieldset>
+              <legend>表单验证例子1</legend>
+              <div>
+                <label for="name">姓名：</label><input type="text" name="name">
+              </div>
+              <div>
+                <label for="password">密码：</label><input type="password" name="password">
+              </div>
+              <div>
+                <label for="confirm_password">确认密码：</label><input type="password" name="confirm_password">
+              </div>
+            </fieldset>
+            <input type="submit" value="验证">
+          </form>
+          <script type="text/javascript">
+            jQuery(function($) {
+              $('#example1').validate({
+                rules: {
+                  name: 'required',
+                  password: 'required',
+                  confirm_password: {
+                    required: true,
+                    equalTo: '#example1 input[name=password]'
+                  }
+                }
+              });
+            });
+          </script>
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>简单例子 - 通过form元素的属性设定规则</h1>
+        <p>规则还可以通过元素的各种属性来定义。规则：</p>
+        <ul>
+          <li class="step">通过class属性来设置，class的名称就是规则的名称。局限性：只能设置不需要参数的验证方法。</li>
+          <li class="step">通过其他属性来设置，属性名称为规则名称，属性值为参数。</li>
+        </ul>
+        <div class="body">
+          <form id="example2">
+            <fieldset>
+              <legend>表单验证例子2</legend>
+              <div>
+                <label for="name">姓名：</label><input type="text" name="name" class="required">
+              </div>
+              <div>
+                <label for="password">密码：</label><input type="password" name="password" class="required">
+              </div>
+              <div>
+                <label for="confirm_password">确认密码：</label><input type="password" name="confirm_password" class="required" equalTo="#example2 input[name=password]">
+              </div>
+            </fieldset>
+            <input type="submit" value="验证">
+          </form>
+          <script type="text/javascript">
+            jQuery(function($) {
+              $('#example2').validate();
+            });
+          </script>
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>简单例子 - 设定提示信息</h1>
+        <p>一个简单的表单验证。</p>
+        <div class="body">
+          <form id="example3">
+            <fieldset>
+              <legend>表单验证例子3</legend>
+              <div>
+                <label for="name">姓名：</label><input type="text" name="name">
+              </div>
+              <div>
+                <label for="email">email：</label><input type="text" name="email">
+              </div>
+            </fieldset>
+            <input type="submit" value="验证">
+          </form>
+          <script type="text/javascript">
+            jQuery(function($) {
+                $('#example3').validate({
+                  rules: {
+                    name: 'required',
+                    email: {
+                      required: true,
+                      email: true
+                    }
+                  },
+                  messages: {
+                    email: {
+                      required: 'email是必须D!',
+                      email: '你懂不懂什么是email啊？'
+                    }
+                  }
+                });
+            });
+          </script>
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>进阶验证 - 依赖</h1>
+        <p>有时，某一个元素的验证规则，是依赖于另外一个元素的。比如：当用户选择“已婚”，可以要求用户必须填写有多少孩子。</p>
+        <div class="body">
+          <form id="example4">
+            <fieldset>
+              <legend>进阶验证1</legend>
+              <div>
+                <label>婚姻状态：</label>
+                <input type="radio" name="marriage" value="yes" id="marriage[yes]"><label for="marriage[yes]">已婚</label>
+                <input type="radio" name="marriage" value="no" id="marriage[no]"><label for="marriage[no]">已婚</label>
+              </div>
+              <div>
+                <label>孩子个数：（已婚必填）</label>
+                <input type="text" name="children">
+              </div>
+            </fieldset>
+            <input type="submit">
+          </form>
+          <script type="text/javascript">
+            jQuery(function($) {
+              $('#example4').validate({
+                rules: {
+                  marriage: 'required',
+                  children: { depends: function() {return true;} }
+                }
+              });
+            });
+          </script>
+        </div>
+      </div>
+
+    </div> <!-- presentation end -->
+
+    <!-- javascripts -->
+    <script type="text/javascript" src="http://www.gstatic.com/codesite/ph/8653308036866339325/js/prettify/prettify.js"></script>
+    <script type="text/javascript" src="s6/shared/jquery.slideshow.js"></script>
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="jGrowl/jquery.jgrowl_compressed.js"></script>
+    <!-- Better Browser Banner for Microsoft Internet Explorer (IE) -->
+    <!--[if IE]>
+    <script type="text/javascript" src="shared/jquery.microsoft.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+      jQuery(function($) {
+        // 幻灯片
+        Slideshow.init();
+
+        // 源代码
+        $('.body').each(function() {
+          $('<button/>').addClass('show_code').text('显示代码').appendTo(
+            $('<p/>').insertBefore($(this))
+          ).data('source',
+            $('<div/>').addClass('source hidden').
+            append($('<pre/>').append(
+              $('<code/>').addClass('prettyprint').addClass('linenums:1').text($(this).html())
+            )).
+            insertAfter($(this))
+          );
+        });
+
+        $('.source').dialog({autoOpen: false, modal: true, title: '源代码', width: 'auto', height: 600});
+
+        $('.show_code').click(function() {
+          $(this).data('source').dialog('open');
+        });
+
+        // 语法高亮
+        prettyPrint();
+      });
+    </script>
+  </body>
+</html>
