@@ -238,7 +238,7 @@
         <h1>进阶验证 - 依赖</h1>
         <p>有时，某一个元素的验证规则，是依赖于另外一个元素的。比如：当用户选择“已婚”，可以要求用户必须填写有多少孩子。</p>
         <div class="body">
-          <form id="example4">
+          <form id="ad1">
             <fieldset>
               <legend>进阶验证1</legend>
               <div>
@@ -255,7 +255,38 @@
           </form>
           <script type="text/javascript">
             jQuery(function($) {
-              $('#example4').validate({
+              $('#ad1').validate({
+                rules: {
+                  marriage: 'required',
+                  children: { depends: function() {return true;} }
+                }
+              });
+            });
+          </script>
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>进阶验证 - 自定义验证规则</h1>
+        <p>当自带的规则不满足需求时，就可以自定义验证规则。</p>
+        <div class="body">
+          <form id="ad2">
+            <fieldset>
+              <legend>进阶验证2</legend>
+              <div>
+                <label>开始时间：</label>
+                <input type="text" name="begin_date">
+              </div>
+              <div>
+                <label>结束时间：</label>
+                <input type="text" name="end_date">
+              </div>
+            </fieldset>
+            <input type="submit">
+          </form>
+          <script type="text/javascript">
+            jQuery(function($) {
+              $('#ad2').validate({
                 rules: {
                   marriage: 'required',
                   children: { depends: function() {return true;} }
@@ -270,13 +301,16 @@
 
     <!-- javascripts -->
     <script type="text/javascript" src="http://www.gstatic.com/codesite/ph/8653308036866339325/js/prettify/prettify.js"></script>
+
+    <!-- s6 -->
     <script type="text/javascript" src="s6/shared/jquery.slideshow.js"></script>
-    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="jGrowl/jquery.jgrowl_compressed.js"></script>
     <!-- Better Browser Banner for Microsoft Internet Explorer (IE) -->
     <!--[if IE]>
-    <script type="text/javascript" src="shared/jquery.microsoft.js"></script>
+    <script type="text/javascript" src="s6/shared/jquery.microsoft.js"></script>
     <![endif]-->
+
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="jGrowl/jquery.jgrowl_compressed.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
     <script type="text/javascript">
       jQuery(function($) {
