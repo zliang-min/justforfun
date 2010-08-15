@@ -428,6 +428,10 @@ function draw_shapes(ctx) {
 function draw_editor(ctx) {
   var Editor = new Class({
     initialize: function(ctx) {
+      $('canvas').on({
+        'mousedown': function() { alert('hey') },
+        'mouseup':   function() { alert('man') }
+      });
       this.ctx = ctx;
       this.line_height = 18;
     },
@@ -435,19 +439,19 @@ function draw_editor(ctx) {
     draw: function() {
       var ctx = this.ctx, line_height = this.line_height;
       ctx.save();
-      ctx.font = '20px 宋体';
+      ctx.font = line_height - 5 + 'px 宋体';
       var lingrad = ctx.createLinearGradient(0, 0, 0, line_height);
       lingrad.addColorStop(0, '#06ADB4');
       lingrad.addColorStop(1, '#03787D');
       var width = ctx.canvas.width,
           white = '#FFF';
-      Object.keys(ctx).sort().each(function(key, i) {
+      /*Object.keys(ctx).sort().*/['A', 'B', 'f'].each(function(key, i) {
         ctx.save();
         ctx.translate(0, i * line_height);
         ctx.fillStyle = lingrad;
         ctx.fillRect(0, 0, width, line_height);
         ctx.fillStyle = white;
-        ctx.fillText(key, 0, 0);
+        ctx.fillText(key, 0, line_height - 5);
         ctx.restore();
       });
       ctx.restore();

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8">
+    <title>Git</title>
+    <!-- meta data -->
+    <meta name="generator" content="hands" />
+    <meta name="presdate" content="soon" />
+    <meta name="author" content="梁智敏" />
+    <meta name="company" content="51hejia.com" />
+    <!-- javascripts -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
+    <!-- sytlesheets -->
+    <!-- prettify -->
+    <link rel="stylesheet" type="text/css" href="prettify/prettify.css" media="screen">
+    <!-- s6 -->
+    <link rel="stylesheet" href="s6/blank.css"         media="projection" id="styleProjection">
+    <link rel="stylesheet" href="s6/shared/screen.css" media="screen"     id="styleScreen">
+    <link rel="stylesheet" href="s6/shared/print.css"  media="print">
+    <!-- local -->
+    <style type="text/css">
+      body { font-family: '微软雅黑', '宋体', sans-serif; }
+    </style>
+  </head>
+  <body>
+    <!-- layout -->
+    <div class="layout">
+      <div id="header">Git</div>
+      <div id="footer">
+        <h1>梁智敏 liang&lt;dot&gt;gimi&lt;at&gt;gmail&lt;dot&gt;com</h1>
+        <h2>Copyright &copy; 2010 梁智敏</h2>
+      </div>
+    </div>
+
+    <div class="presentation">
+    <!-- slides go here -->
+
+      <div class="slide">
+        <h1>Submodules</h1>
+        <dl>
+          <dt class="step">添加一个submodule</dt>
+          <dd>
+            <code>git submodule add git://github.com/rack/rack.git rack</code>
+          </dd>
+          <dt class="step">.gitmodules文件</dt>
+          <dd>记录着项目中所有submodules的信息。</dd>
+        </dl>
+        <p>一个submodule其实只是一个指向该submodule的源的某一个commit的指针。拥有该submodule的git项目并不会去跟踪其内容。submodules和父项目之间是被分开看待的两个项目，git命令在两者之间运行会得到不一样的结果。必须紧记这点。</p>
+        <p>克隆有submodules的项目。</p>
+        <p>
+        项目克隆下来后，里面的submodules只有目录，并没有内容。必须执行以下两步：
+        <ol>
+          <li><code>git submodule init</code></li>
+          <li><code>git submodule update</code></li>
+        </ol>
+        </p>
+        <p>当submodules有了更新之后，执行以下两步：
+        <ol>
+          <li><code>git merge origin/master</code></li>
+          <li><code>git submodule update</code></li>
+        </ol>
+        </p>
+        <p>当有人修改了submodules但不提交到public repository的话，执行<code>git submodule update</code>就会发生错误。</p>
+      </div>
+
+    </div> <!-- presentation end -->
+
+    <!-- javascripts -->
+    <script type="text/javascript" src="http://www.gstatic.com/codesite/ph/8653308036866339325/js/prettify/prettify.js"></script>
+    <script type="text/javascript" src="s6/shared/jquery.slideshow.js"></script>
+    <!-- Better Browser Banner for Microsoft Internet Explorer (IE) -->
+    <!--[if IE]>
+    <script type="text/javascript" src="s6/shared/jquery.microsoft.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+      jQuery(function($) {
+        // 语法高亮 '.prettyprint'
+        $('code').addClass('prettyprint');
+        prettyPrint();
+      });
+    </script>
+  </body>
+</html>
