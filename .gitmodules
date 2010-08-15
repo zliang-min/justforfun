@@ -1,0 +1,3 @@
+[submodule "vendor/s6"]
+	path = vendor/s6
+	url = http://github.com/geraldb/s6.git
