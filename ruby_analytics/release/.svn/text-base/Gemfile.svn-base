@@ -1,0 +1,5 @@
+source :gemcutter
+
+gem 'sequel', '>= 3.9.0', :require => 'sequel_core'
+gem 'rack', '>= 1.1.0'
+gem 'sqlite3-ruby', '>= 1.2.5'

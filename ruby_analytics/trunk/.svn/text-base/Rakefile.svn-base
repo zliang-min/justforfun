@@ -1,0 +1,16 @@
+namespace :bundle do
+  desc "Run bundle install."
+  task :install do
+    ruby '-Ivendor/bundler-0.9.13/lib vendor/bundler-0.9.13/bin/bundle install'
+  end
+
+  desc "Run bundle package."
+  task :package do
+    ruby '-Ivendor/bundler-0.9.13/lib vendor/bundler-0.9.13/bin/bundle package'
+  end
+
+  desc "Run bundle lock."
+  task :lock do
+    ruby '-Ivendor/bundler-0.9.13/lib vendor/bundler-0.9.13/bin/bundle lock'
+  end
+end

@@ -1,0 +1,9 @@
+#!/bin/sh
+# Author: Gimi Liang ( liangzhimin at 51hejia dot com )
+CMD='svn merge'
+REPOS='svn://svn.51hejia.com/51hejia/repos/ruby_analytics'
+if [[ $1 == dry ]] || [[ $1 == d ]]; then
+  CMD='svn merge --dry-run'
+  echo 'DRY RUN mode'
+fi
+$CMD $REPOS/release $REPOS/trunk

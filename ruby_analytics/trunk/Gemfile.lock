@@ -1,0 +1,27 @@
+--- 
+dependencies: 
+  sqlite3-ruby: 
+    group: 
+    - :default
+    version: ">= 1.2.5"
+  rack: 
+    group: 
+    - :default
+    version: ">= 1.1.0"
+  sequel: 
+    group: 
+    - :default
+    version: ">= 3.9.0"
+    require: 
+    - sequel_core
+specs: 
+- rack: 
+    version: 1.1.0
+- sequel: 
+    version: 3.9.0
+- sqlite3-ruby: 
+    version: 1.2.5
+hash: 54edf876b566cac3b34237e6e9a7d014e95c27a8
+sources: 
+- Rubygems: 
+    uri: http://gemcutter.org

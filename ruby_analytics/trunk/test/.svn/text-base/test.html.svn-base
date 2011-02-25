@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <title>Ruby Analytics测试页面 第二页</title>
+    <meta charset="utf8" />
+  </head>
+  <body>
+    <div>
+      <p>This is a test page which tests Ruby Analytics</p>
+      <p>Click <a href="/test/test.html">here</a> to test self-refer.</p>
+      <p>Click <a href="/test/index.html">here</a> to go back to 测试页面1.</p>
+    </div>
+    <!-- script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script -->
+    <script type="text/javascript">
+      var _raq = _raq || [];
+      _raq.push(
+        ['_setAccount', 'UA-XXXXX-X'],
+        ['_setDomainName', '.51hejia.com'],
+        ['_trackPageview'],
+        ['b', '_setAccount', 'UA-YYYYY-Y'],
+        ['b', '_trackPageview']
+      );
+
+      (function() {
+        var ra = document.createElement('script'); ra.type = 'text/javascript'; ra.async = true;
+        ra.src = 'http://test.51hejia.com:3000/ra.uncompressed.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ra, s);
+      })();
+    </script>
+  </body>
+</html>

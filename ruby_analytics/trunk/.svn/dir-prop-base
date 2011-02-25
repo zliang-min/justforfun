@@ -1,0 +1,11 @@
+K 10
+svn:ignore
+V 12
+log
+.bundle
+
+K 13
+svn:mergeinfo
+V 47
+/Dev/Code/Ruby/ruby_analytics/trunk:12654-12685
+END

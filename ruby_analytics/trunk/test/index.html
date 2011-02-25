@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <title>Ruby Analytics测试页面</title>
+    <meta charset="utf8" />
+  </head>
+  <body>
+    <div>
+      <p>This is a test page which tests Ruby Analytics</p>
+      <p>Click <a href="/test/index.html">here</a> to test self-refer.</p>
+      <p>Click <a href="/test/test.html">here</a> to go to 测试页面2.</p>
+    </div>
+    <!-- script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script -->
+    <script type="text/javascript" src="/ra.uncompressed.js"></script>
+    <script type="text/javascript">
+      var pageTracker = _rat._getTracker(); // rat? orz
+      pageTracker._setDomainName(".51hejia.com");
+      pageTracker._trackPageview();
+    </script>
+  </body>
+</html>
