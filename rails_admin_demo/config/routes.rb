@@ -1,4 +1,6 @@
 RailsAdminDemo::Application.routes.draw do
+  devise_for :employees
+
   resources :articles
 
   root :to => 'articles#index', :via => :get
