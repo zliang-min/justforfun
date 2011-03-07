@@ -1,7 +1,7 @@
 class DeviseCreateEmployees < ActiveRecord::Migration
   def self.up
     create_table(:employees) do |t|
-      t.database_authenticatable :null => false
+      # t.database_authenticatable :null => false
       # t.recoverable
       # t.rememberable
       t.trackable
@@ -10,6 +10,8 @@ class DeviseCreateEmployees < ActiveRecord::Migration
       t.lockable :lock_strategy => :none, :unlock_strategy => :none
       # t.token_authenticatable
 
+      t.string :email, :limit => 255, :unique => true, :null => false
+      t.string :name,  :limit => 20
       t.timestamps
     end
 

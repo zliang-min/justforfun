@@ -8,6 +8,8 @@ gem 'rails', '~> 3.0.5'
 gem 'sqlite3'
 
 gem 'devise'
+gem 'devise_ldap_authenticatable', :git => 'http://github.com/Gimi/devise_ldap_authenticatable.git'
+#gem 'devise_ldap_authenticatable', :path => '/home/gimi/projects/github/devise_ldap_authenticatable'
 gem 'cancan'
 
 gem 'cells'

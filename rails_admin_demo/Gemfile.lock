@@ -6,6 +6,14 @@ GIT
       builder (~> 2.1.0)
       rails (~> 3.0.3)
 
+GIT
+  remote: http://github.com/Gimi/devise_ldap_authenticatable.git
+  revision: 17818533b2d88d7d2d8223ba67bb1d7439c1b2b8
+  specs:
+    devise_ldap_authenticatable (0.4.6)
+      devise (~> 1.1.2)
+      net-ldap (= 0.1.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -61,6 +69,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.16)
     mocha (0.9.12)
+    net-ldap (0.1.1)
     nifty-generators (0.4.5)
     polyglot (0.3.1)
     rack (1.2.1)
@@ -116,6 +125,7 @@ DEPENDENCIES
   cancan
   cells
   devise
+  devise_ldap_authenticatable!
   mocha
   nifty-generators
   rails (~> 3.0.5)
