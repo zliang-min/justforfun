@@ -23,10 +23,10 @@ authorizations: &AUTHORIZATIONS
 development: &dev
   host: 192.168.0.71
   port: 389
-  attribute: cn
+  attribute: samaccountname
   base: dc=office,dc=51hejia,dc=com
-  admin_user: administrator@office.51hejia.com
-  admin_password: 51hejia@com
+  #admin_user: somebody@office.51hejia.com
+  #admin_password: secret
   ssl: false
   # <<: *AUTHORIZATIONS
 
@@ -37,8 +37,9 @@ production:
   host: localhost
   port: 636
   attribute: cn
-  base: ou=people,dc=test,dc=com
-  admin_user: cn=admin,dc=test,dc=com
-  admin_password: admin_password
+  attribute: samaccountname
+  base: dc=office,dc=51hejia,dc=com
+  #admin_user: somebody@office.51hejia.com
+  #admin_password: secret
   ssl: true
   # <<: *AUTHORIZATIONS

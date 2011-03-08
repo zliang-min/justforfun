@@ -18,22 +18,22 @@ en:
       signed_in: '登录成功。'
       signed_out: '退出成功。'
     passwords:
-      send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
-      updated: 'Your password was changed successfully. You are now signed in.'
+      send_instructions: '不久之后，您将会收到一封邮件，告诉您如何进行重设密码的操作。'
+      updated: '您的密码已经修改成功。您已处于登录状态。'
     confirmations:
-      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
-      confirmed: 'Your account was successfully confirmed. You are now signed in.'
+      send_instructions: '不久之后，您将会收到一封邮件，告诉您如何进行确认帐号操作。'
+      confirmed: '您的帐号已经确认成功。您已处于登录状态。'
     registrations:
-      signed_up: 'You have signed up successfully. If enabled, a confirmation was sent to your e-mail.'
-      updated: 'You updated your account successfully.'
-      destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
+      signed_up: '您已经注册成功！如果系统开通了确认功能，您将会收到一封确认邮件。'
+      updated: '您已成功更新您的帐户信息。'
+      destroyed: '再见！您的帐号已经被注销。我们希望能很快再次见到你。'
     unlocks:
-      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
-      unlocked: 'Your account was successfully unlocked. You are now signed in.'
+      send_instructions: '不久之后，您将会收到一封邮件，告诉您如何进行帐号解冻操作。'
+      unlocked: '您的帐号已经成功解冻。您已处于登录状态。'
     mailer:
       confirmation_instructions:
-        subject: 'Confirmation instructions'
+        subject: '帐号确认操作'
       reset_password_instructions:
-        subject: 'Reset password instructions'
+        subject: '重设密码操作'
       unlock_instructions:
-        subject: 'Unlock Instructions'
+        subject: '帐号解冻操作'

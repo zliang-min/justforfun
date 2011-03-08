@@ -3,12 +3,13 @@
 Devise.setup do |config|
   # ==> LDAP Configuration 
   # config.ldap_logger = true
-  # config.ldap_create_user = false
-  # config.ldap_update_password = true
+  config.ldap_create_user = true
+  config.ldap_update_password = false
   # config.ldap_config = "#{Rails.root}/config/ldap.yml"
   # config.ldap_check_group_membership = false
   # config.ldap_check_attributes = false
   # config.ldap_use_admin_to_bind = false
+  config.ldap_auth_username_builder = -> attribute, login, ldap { "#{login}@office.51hejia.com" }
   
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in DeviseMailer.

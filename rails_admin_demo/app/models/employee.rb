@@ -6,5 +6,6 @@ class Employee < ActiveRecord::Base
          :lockable
 
   # Setup accessible (or protected) attributes for your model
+  attr_accessor   :password
   attr_accessible :email
 end
