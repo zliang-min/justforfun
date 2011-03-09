@@ -25,8 +25,8 @@ development: &dev
   port: 389
   attribute: samaccountname
   base: dc=office,dc=51hejia,dc=com
-  #admin_user: somebody@office.51hejia.com
-  #admin_password: secret
+  admin_user: administrator@office.51hejia.com
+  admin_password: 51hejia@com
   ssl: false
   # <<: *AUTHORIZATIONS
 

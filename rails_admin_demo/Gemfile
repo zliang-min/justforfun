@@ -6,10 +6,11 @@ gem 'rails', '~> 3.0.5'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'redis'
 
 gem 'devise'
-gem 'devise_ldap_authenticatable', :git => 'http://github.com/Gimi/devise_ldap_authenticatable.git'
-#gem 'devise_ldap_authenticatable', :path => '/home/gimi/projects/github/devise_ldap_authenticatable'
+#gem 'devise_ldap_authenticatable', :git => 'http://github.com/Gimi/devise_ldap_authenticatable.git'
+gem 'devise_ldap_authenticatable', :path => '/home/gimi/projects/github/devise_ldap_authenticatable'
 gem 'cancan'
 
 gem 'cells'

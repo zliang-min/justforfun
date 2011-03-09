@@ -10,12 +10,14 @@ class DeviseCreateEmployees < ActiveRecord::Migration
       t.lockable :lock_strategy => :none, :unlock_strategy => :none
       # t.token_authenticatable
 
-      t.string :email, :limit => 255, :unique => true, :null => false
-      t.string :name,  :limit => 20
+      t.string :email,   :limit => 255, :unique => true, :null => false
+      t.string :account, :limit => 50,  :unique => true, :null => false
+      t.string :name,    :limit => 20
       t.timestamps
     end
 
-    add_index :employees, :email,                :unique => true
+    add_index :employees, :email,   :unique => true
+    add_index :employees, :account, :unique => true
     # add_index :employees, :reset_password_token, :unique => true
     # add_index :employees, :confirmation_token,   :unique => true
     # add_index :employees, :unlock_token,         :unique => true

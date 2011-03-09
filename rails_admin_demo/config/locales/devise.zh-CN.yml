@@ -1,4 +1,4 @@
-en:
+zh-CN:
   errors:
     messages:
       not_found: "不存在"
@@ -10,13 +10,15 @@ en:
       unauthenticated: '您必须登录后才能继续操作。'
       unconfirmed: '您必须经过确认才能继续操作。'
       locked: '您的帐号已经被锁定。'
-      invalid: '无效的电子邮箱或者密码。'
+      invalid: '无效的帐号或者密码。'
       invalid_token: '无效的认证码。'
       timeout: '您当前的会话已经过期，请重新登录。'
       inactive: '您的帐号尚未被激活。'
     sessions:
       signed_in: '登录成功。'
       signed_out: '退出成功。'
+      new:
+        sign_in: '登录'
     passwords:
       send_instructions: '不久之后，您将会收到一封邮件，告诉您如何进行重设密码的操作。'
       updated: '您的密码已经修改成功。您已处于登录状态。'

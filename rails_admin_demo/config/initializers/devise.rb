@@ -5,11 +5,14 @@ Devise.setup do |config|
   # config.ldap_logger = true
   config.ldap_create_user = true
   config.ldap_update_password = false
+  config.ldap_update_with_user_entry = {
+    :email => :mail, :name => :dispaly_name
+  }
   # config.ldap_config = "#{Rails.root}/config/ldap.yml"
   # config.ldap_check_group_membership = false
   # config.ldap_check_attributes = false
-  # config.ldap_use_admin_to_bind = false
-  config.ldap_auth_username_builder = -> attribute, login, ldap { "#{login}@office.51hejia.com" }
+  config.ldap_use_admin_to_bind = true
+  # config.ldap_auth_username_builder = -> attribute, login, ldap { "#{login}@office.51hejia.com" }
   
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in DeviseMailer.
@@ -30,7 +33,7 @@ Devise.setup do |config|
   # authenticating an user, both parameters are required. Remember that those
   # parameters are used only when authenticating and not when retrieving from
   # session. If you need permissions, you should implement that in a before filter.
-  # config.authentication_keys = [ :email ]
+  config.authentication_keys = [ :account, :password ]
 
   # Tell if authentication through request.params is enabled. True by default.
   # config.params_authenticatable = true

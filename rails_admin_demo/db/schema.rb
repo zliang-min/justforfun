@@ -41,12 +41,11 @@ ActiveRecord::Schema.define(:version => 20110304092853) do
     t.string   "last_sign_in_ip"
     t.datetime "locked_at"
     t.string   "email",                                           :null => false
+    t.string   "account",            :limit => 50,                :null => false
     t.string   "name",               :limit => 20
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "employees", ["email"], :name => "index_employees_on_email", :unique => true
 
   create_table "rails_admin_histories", :force => true do |t|
     t.string   "message"

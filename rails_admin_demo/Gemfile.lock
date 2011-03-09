@@ -1,14 +1,13 @@
 GIT
   remote: git://github.com/sferik/rails_admin.git
-  revision: 3c10d5632bf20b94180e9080db6d43ac69a5d917
+  revision: d07a2e42c4579151f2b9ddfaa06e7230038d0860
   specs:
     rails_admin (0.0.1)
       builder (~> 2.1.0)
       rails (~> 3.0.3)
 
-GIT
-  remote: http://github.com/Gimi/devise_ldap_authenticatable.git
-  revision: 17818533b2d88d7d2d8223ba67bb1d7439c1b2b8
+PATH
+  remote: /home/gimi/projects/github/devise_ldap_authenticatable
   specs:
     devise_ldap_authenticatable (0.4.6)
       devise (~> 1.1.2)
@@ -49,8 +48,9 @@ GEM
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
     cancan (1.5.1)
-    cells (3.5.4)
-      rails (~> 3.0.0)
+    cells (3.5.5)
+      actionpack (~> 3.0.0)
+      railties (~> 3.0.0)
     columnize (0.3.2)
     daemons (1.1.0)
     devise (1.1.7)
@@ -91,6 +91,7 @@ GEM
       rake (>= 0.8.7)
       thor (~> 0.14.4)
     rake (0.8.7)
+    redis (2.1.1)
     ruby-debug-base19 (0.11.24)
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
@@ -130,6 +131,7 @@ DEPENDENCIES
   nifty-generators
   rails (~> 3.0.5)
   rails_admin!
+  redis
   ruby-debug19
   slim
   sqlite3
