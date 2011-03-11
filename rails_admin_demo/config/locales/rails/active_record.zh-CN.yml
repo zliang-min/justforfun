@@ -1,15 +1,15 @@
 en:
   # Attributes names common to most models
-  #attributes:
-    #created_at: "Created at"
-    #updated_at: "Updated at"
+  attributes:
+    created_at: "创建于"
+    updated_at: "更新于"
 
   # Active Record models configuration
   activerecord:
     errors:
       messages:
-        taken: "has already been taken"
-        record_invalid: "Validation failed: %{errors}"
+        taken: "已被占用"
+        record_invalid: "验证失败: %{errors}"
         # Append your own errors here or at the model/attributes scope.
 
       # You can define own errors for models or model attributes.
