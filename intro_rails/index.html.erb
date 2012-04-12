@@ -1,0 +1,12 @@
+<%= render 'form' %>
+
+<hr/>
+
+<h1>tweets</h1>
+
+<ul id="tweets">
+<% @tweets.each do |tweet| %>
+  <li><%= link_to tweet.body, tweet %></li>
+  <li><%= link_to 'x', tweet, title: 'Delete', confirm: 'Are you sure?', method: :delete %></li>
+<% end %>
+</ul>
