@@ -1,0 +1,89 @@
+# Bifrost
+The New JSON BUS REST API
+
+## Install
+Read: Bifrost/DevEnvironmentHowto
+
+In a breif
+    git clone
+    git checkout next
+    # get BUS's code
+    git submodule init
+    git submodule update
+    scripts/links_bus.sh
+
+    bundle # needs vpn
+
+install CouchDB
+* Homebrew client: `lib/divan.rb`
+  * `RackProc#store_job`
+  * `RackBackupJob`
+  * `RestoreObject`
+  * `BackupJob`
+* But
+  * `RackDownloader`, `RackDoc`, `RackRestoreJob` don't use Divan
+  * `BackupGroup`, `backup_sites` (RestoreObject)
+
+create databases in CouchDB
+    backup-groups
+    backup-sites
+    backup-jobs
+    managed_jobs
+
+install Redis
+(API Keys management, IP whitelist, rate limit, job queue, shavlik config)
+
+Start Service
+Foreman is a manager for Procfile-based applications.
+bundle exec foreman start
+
+RabbitMQ (AMPQ)
+* bunny
+* lib/rabbitmq.rb
+* Dispatcher
+* RackProc
+
+## The Rack Stack
+1. Rack::CommonLogger
+2. Rack::JSONP
+  Handle JSONP calls
+3. Perimeter
+  A filter, sanitizes headers & body; plus some routes (special cases)
+4. Rack::Session::Pool
+5. Warden
+  Authentication (`bus_basic` - username & password)
+6. Authenticate
+  checks `API_KEY`(header). API keys are stored in redis, with its metadata.
+7. IpWhitelist
+  checks IP against the whitelist, which is one of the API key's metadata.
+8. Router
+  API URL pattern: `:api/:resource/:id/:section/:section_id` (defined in UriMapper)
+9. ApiStats
+  doing nothing now. Supposed to do stats.
+10. Rack::PostBodyToParams
+11. Authorize
+  checks if the caller is authorized to make the API call (in the right scope, `api_scope_delegate`).
+  E.g. looking for a user, who has to be descended from the `current_partner`.
+  See `ModelMixin` and delegators (`api/delegates`).
+12. Dispatcher
+  calls the `:endpoint` in the API definition.
+    * `RackModel`
+    * `RackDownloader`
+    * `ApiDocumentationRack`
+    * `RackRestoreJob`
+    * `RackBackupJob`
+    * `RackProc`
+    * `RackPing`
+  if there is any event defined in the API definition, all events will be published (to RabittMQ).
+__END__
+
+1. create an application object
+2. use Ruby instead of YAML for API definitions
+3. use debugger instead of ruby-debug19
+4. use :group in Gemfile (which means introduce "mode")
+5. too many constants, which means too many global states.
+6. while there is a logger object, it still uses "puts" a lot.
+7. code is kinda messy. (perimeter.rb is a good example)
+
+?
+1. why there is a gems folder?
