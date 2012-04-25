@@ -67,14 +67,27 @@ RabbitMQ (AMPQ)
   See `ModelMixin` and delegators (`api/delegates`).
 12. Dispatcher
   calls the `:endpoint` in the API definition.
+  available endpoints (`lib/rackable_model`)
     * `RackModel`
+      An `Rackable` object.
+      Dispatches API actions (see `ModelMixin`) to models. (Expose models to the web).
+    * `RackProc`
+      Queue Jobs.
+      * use `model.message_delegate` to generate message. (`ModelMixin`)
+      * use Redis for concurrency check
+      * put Job data in CouchDB
+      * queue in RabbitMQ
+    * `RackDoc`
+      CRUD documents (in CounchDB)
+    * `RackPing`
+      only respond to HEAD and return nothing but `header["X-Ping-Response"] = "Pong"`
     * `RackDownloader`
     * `ApiDocumentationRack`
     * `RackRestoreJob`
     * `RackBackupJob`
-    * `RackProc`
-    * `RackPing`
-  if there is any event defined in the API definition, all events will be published (to RabittMQ).
+    * `RackProxy`
+      not implemented yet
+  if there is any event defined in the API definition, all events will be published (to RabbitMQ).
 __END__
 
 1. create an application object
@@ -84,6 +97,7 @@ __END__
 5. too many constants, which means too many global states.
 6. while there is a logger object, it still uses "puts" a lot.
 7. code is kinda messy. (perimeter.rb is a good example)
+8. in `RackProc`, duplicated message in CouchDB & RabbitMQ ?
 
 ?
 1. why there is a gems folder?
