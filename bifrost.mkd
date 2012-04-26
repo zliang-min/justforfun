@@ -67,6 +67,7 @@ RabbitMQ (AMPQ)
   See `ModelMixin` and delegators (`api/delegates`).
 12. Dispatcher
   calls the `:endpoint` in the API definition.
+  if there is any event defined in the API definition, all events will be published (to RabbitMQ).
   available endpoints (`lib/rackable_model`)
     * `RackModel`
       An `Rackable` object.
@@ -81,13 +82,19 @@ RabbitMQ (AMPQ)
       CRUD documents (in CounchDB)
     * `RackPing`
       only respond to HEAD and return nothing but `header["X-Ping-Response"] = "Pong"`
-    * `RackDownloader`
-    * `ApiDocumentationRack`
-    * `RackRestoreJob`
     * `RackBackupJob`
+      read / manage backup jobs.
+      uses CouchDB as storage, and redis as job queue / tracker.
+    * `RackRestoreJob`
+      managed job API.
+      uses CouchDB as storage, and redis job queue.
+    * `RackDownloader`
+      initiate, request assets (VMDK's) downloads.
+      Nginx does real download job.
+    * `ApiDocumentationRack`
+      generates API docs (/help)
     * `RackProxy`
       not implemented yet
-  if there is any event defined in the API definition, all events will be published (to RabbitMQ).
 __END__
 
 1. create an application object
